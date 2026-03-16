@@ -1,0 +1,17 @@
+
+- finale Feature-Liste :
+
+Lag Features:      load_t1h, load_t24h, load_t168h
+Rolling Features:  rolling_mean_24h, rolling_mean_168h, rolling_std_24h
+Zeit Features:     hour, weekday, month, is_weekend, is_holiday
+Wetter Features:   temperature, wind_speed, radiation
+
+features = [
+"load_t1h","load_t24h","load_t168h",
+"rolling_mean_24h","rolling_mean_168h","rolling_std_24h",
+"hour","weekday","month","is_weekend","is_holiday",
+"temperature","wind_speed","radiation"
+]
+
+X = df[features]
+y = df["load"]

@@ -1,0 +1,31 @@
+Hier ist die aktualisierte Erklärung mit allen 5 Modellen und den neuen Schritten:
+
+**Data Sources** — du holst zwei Dinge: den stündlichen Stromverbrauch Deutschlands (ENTSO-E) und Wetterdaten (Temperatur, Wind, Strahlung). Beide sind öffentlich und kostenlos.
+
+**Data Cleaning** — Lücken füllen, Zeitstempel angleichen, Ausreißer entfernen. Strom- und Wetterdaten müssen auf dieselbe Stunden-Zeitachse gebracht werden.
+
+**EDA (Exploratory Data Analysis)** — bevor du modellierst, schaust du dir die Daten an. Wie sieht der Verbrauch im Sommer vs Winter aus? Wie stark korreliert die Last mit der Temperatur? Das hilft dir bessere Features zu bauen.
+
+**Feature Engineering** — du sagst dem Modell: "es ist 8 Uhr morgens, Montag, Januar, Feiertag". Diese Zeitinformationen sind entscheidend weil der Verbrauch stark davon abhängt.
+
+**Lag Features** — der wichtigste Schritt. Du gibst dem Modell die Last von vor 1h, 24h und 168h (1 Woche) als Input. Warum? Weil der Verbrauch heute sehr ähnlich wie gestern zur selben Zeit ist.
+
+**Train/Test Split** — 2020-2022 zum Trainieren, 2023 zum Testen. Das Modell darf die Testdaten nie sehen — sonst schummelst du.
+
+**5 Modelle:**
+- Linear Regression — einfachste Baseline, Referenzpunkt
+- Random Forest — robust, gut mit tabellarischen Daten
+- XGBoost — stärkster klassischer Algorithmus
+- SVM — gut bei komplexen nichtlinearen Mustern
+- LSTM — Deep Learning, versteht zeitliche Abhängigkeiten am besten
+
+**Hyperparameter Tuning** — jedes Modell hat Einstellungen die du optimieren kannst. Zum Beispiel wie viele Bäume hat der Random Forest? GridSearchCV probiert automatisch alle Kombinationen aus und findet die besten.
+
+**Evaluation** — du vergleichst alle 5 Modelle mit denselben Metriken:
+- MAE — mittlerer Fehler in MW
+- RMSE — bestraft große Fehler stärker
+- R² — wie gut erklärt das Modell die Varianz
+
+**Feature Importance** — nach dem Training zeigt dir Random Forest und XGBoost welche Features am wichtigsten waren. Ist es die Temperatur? Die Stunde? Der Wochentag? Das ist der Teil der Firmen wirklich interessiert.
+
+**Forecast + Visualization + Insights** — du plottest Vorhersage vs tatsächliche Last, zeigst Muster (Morgenspitze, Wochenende, Winter) und ziehst Schlussfolgerungen für den deutschen Energiemarkt.

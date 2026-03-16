@@ -1,0 +1,291 @@
+<svg width="732pt" height="1066pt" viewBox="0.00 0.00 732.00 1066.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1062.2)">
+<title>ML_Load_Forecasting</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-1062.2 728,-1062.2 728,4 -4,4"/>
+<g id="clust1" class="cluster">
+<title>cluster_data</title>
+<polygon fill="none" stroke="#888888" stroke-dasharray="5,2" points="119,-973.4 119,-1050.2 564,-1050.2 564,-973.4 119,-973.4"/>
+<text xml:space="preserve" text-anchor="middle" x="341.5" y="-1033.6" font-family="Helvetica,sans-Serif" font-size="14.00">Data Sources</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_processing</title>
+<polygon fill="none" stroke="#888888" stroke-dasharray="5,2" points="205,-572.6 205,-965.4 441,-965.4 441,-572.6 205,-572.6"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-948.8" font-family="Helvetica,sans-Serif" font-size="14.00">Data Processing</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_ml</title>
+<polygon fill="none" stroke="#888888" stroke-dasharray="5,2" points="8,-329.8 8,-564.6 716,-564.6 716,-329.8 8,-329.8"/>
+<text xml:space="preserve" text-anchor="middle" x="362" y="-548" font-family="Helvetica,sans-Serif" font-size="14.00">Machine Learning Models</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_results</title>
+<polygon fill="none" stroke="#888888" stroke-dasharray="5,2" points="195,-8 195,-321.8 452,-321.8 452,-8 195,-8"/>
+<text xml:space="preserve" text-anchor="middle" x="323.5" y="-305.2" font-family="Helvetica,sans-Serif" font-size="14.00">Results</text>
+</g>
+<!-- Load -->
+<g id="node1" class="node">
+<title>Load</title>
+<path fill="#e1f5ee" stroke="#0f6e56" d="M279.27,-1017.4C279.27,-1017.4 138.73,-1017.4 138.73,-1017.4 132.73,-1017.4 126.73,-1011.4 126.73,-1005.4 126.73,-1005.4 126.73,-993.4 126.73,-993.4 126.73,-987.4 132.73,-981.4 138.73,-981.4 138.73,-981.4 279.27,-981.4 279.27,-981.4 285.27,-981.4 291.27,-987.4 291.27,-993.4 291.27,-993.4 291.27,-1005.4 291.27,-1005.4 291.27,-1011.4 285.27,-1017.4 279.27,-1017.4"/>
+<text xml:space="preserve" text-anchor="middle" x="209" y="-1002.7" font-family="Helvetica,sans-Serif" font-size="11.00">Electricity Load</text>
+<text xml:space="preserve" text-anchor="middle" x="209" y="-989.5" font-family="Helvetica,sans-Serif" font-size="11.00">ENTSO-E · hourly · Germany</text>
+</g>
+<!-- Cleaning -->
+<g id="node3" class="node">
+<title>Cleaning</title>
+<path fill="#eeedfe" stroke="#534ab7" d="M420.79,-932.6C420.79,-932.6 225.21,-932.6 225.21,-932.6 219.21,-932.6 213.21,-926.6 213.21,-920.6 213.21,-920.6 213.21,-908.6 213.21,-908.6 213.21,-902.6 219.21,-896.6 225.21,-896.6 225.21,-896.6 420.79,-896.6 420.79,-896.6 426.79,-896.6 432.79,-902.6 432.79,-908.6 432.79,-908.6 432.79,-920.6 432.79,-920.6 432.79,-926.6 426.79,-932.6 420.79,-932.6"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-917.9" font-family="Helvetica,sans-Serif" font-size="11.00">Data Cleaning</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-904.7" font-family="Helvetica,sans-Serif" font-size="11.00">Missing values · outliers · time alignment</text>
+</g>
+<!-- Load&#45;&gt;Cleaning -->
+<g id="edge1" class="edge">
+<title>Load-&gt;Cleaning</title>
+<path fill="none" stroke="#666666" d="M252.24,-981C252.24,-981 252.24,-944.48 252.24,-944.48"/>
+<polygon fill="#666666" stroke="#666666" points="255.74,-944.48 252.24,-934.48 248.74,-944.48 255.74,-944.48"/>
+</g>
+<!-- Weather -->
+<g id="node2" class="node">
+<title>Weather</title>
+<path fill="#e1f5ee" stroke="#0f6e56" d="M544.06,-1017.4C544.06,-1017.4 331.94,-1017.4 331.94,-1017.4 325.94,-1017.4 319.94,-1011.4 319.94,-1005.4 319.94,-1005.4 319.94,-993.4 319.94,-993.4 319.94,-987.4 325.94,-981.4 331.94,-981.4 331.94,-981.4 544.06,-981.4 544.06,-981.4 550.06,-981.4 556.06,-987.4 556.06,-993.4 556.06,-993.4 556.06,-1005.4 556.06,-1005.4 556.06,-1011.4 550.06,-1017.4 544.06,-1017.4"/>
+<text xml:space="preserve" text-anchor="middle" x="438" y="-1002.7" font-family="Helvetica,sans-Serif" font-size="11.00">Weather Data</text>
+<text xml:space="preserve" text-anchor="middle" x="438" y="-989.5" font-family="Helvetica,sans-Serif" font-size="11.00">Temperature · wind · radiation · wind speed</text>
+</g>
+<!-- Weather&#45;&gt;Cleaning -->
+<g id="edge2" class="edge">
+<title>Weather-&gt;Cleaning</title>
+<path fill="none" stroke="#666666" d="M376.37,-981C376.37,-981 376.37,-944.48 376.37,-944.48"/>
+<polygon fill="#666666" stroke="#666666" points="379.87,-944.48 376.37,-934.48 372.87,-944.48 379.87,-944.48"/>
+</g>
+<!-- EDA -->
+<g id="node4" class="node">
+<title>EDA</title>
+<path fill="#eeedfe" stroke="#534ab7" d="M407.65,-853.6C407.65,-853.6 238.35,-853.6 238.35,-853.6 232.35,-853.6 226.35,-847.6 226.35,-841.6 226.35,-841.6 226.35,-829.6 226.35,-829.6 226.35,-823.6 232.35,-817.6 238.35,-817.6 238.35,-817.6 407.65,-817.6 407.65,-817.6 413.65,-817.6 419.65,-823.6 419.65,-829.6 419.65,-829.6 419.65,-841.6 419.65,-841.6 419.65,-847.6 413.65,-853.6 407.65,-853.6"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-838.9" font-family="Helvetica,sans-Serif" font-size="11.00">Exploratory Data Analysis</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-825.7" font-family="Helvetica,sans-Serif" font-size="11.00">Patterns · correlations · seasonality</text>
+</g>
+<!-- Cleaning&#45;&gt;EDA -->
+<g id="edge3" class="edge">
+<title>Cleaning-&gt;EDA</title>
+<path fill="none" stroke="#666666" d="M323,-896.28C323,-896.28 323,-865.61 323,-865.61"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-865.61 323,-855.61 319.5,-865.61 326.5,-865.61"/>
+</g>
+<!-- FeatEng -->
+<g id="node5" class="node">
+<title>FeatEng</title>
+<path fill="#eeedfe" stroke="#534ab7" d="M418.97,-774.6C418.97,-774.6 227.03,-774.6 227.03,-774.6 221.03,-774.6 215.03,-768.6 215.03,-762.6 215.03,-762.6 215.03,-750.6 215.03,-750.6 215.03,-744.6 221.03,-738.6 227.03,-738.6 227.03,-738.6 418.97,-738.6 418.97,-738.6 424.97,-738.6 430.97,-744.6 430.97,-750.6 430.97,-750.6 430.97,-762.6 430.97,-762.6 430.97,-768.6 424.97,-774.6 418.97,-774.6"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-759.9" font-family="Helvetica,sans-Serif" font-size="11.00">Feature Engineering</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-746.7" font-family="Helvetica,sans-Serif" font-size="11.00">Hour · day · month · weekend · holiday</text>
+</g>
+<!-- EDA&#45;&gt;FeatEng -->
+<g id="edge4" class="edge">
+<title>EDA-&gt;FeatEng</title>
+<path fill="none" stroke="#666666" d="M323,-817.28C323,-817.28 323,-786.61 323,-786.61"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-786.61 323,-776.61 319.5,-786.61 326.5,-786.61"/>
+</g>
+<!-- LagFeat -->
+<g id="node6" class="node">
+<title>LagFeat</title>
+<path fill="#eeedfe" stroke="#534ab7" d="M382.6,-695.6C382.6,-695.6 263.4,-695.6 263.4,-695.6 257.4,-695.6 251.4,-689.6 251.4,-683.6 251.4,-683.6 251.4,-671.6 251.4,-671.6 251.4,-665.6 257.4,-659.6 263.4,-659.6 263.4,-659.6 382.6,-659.6 382.6,-659.6 388.6,-659.6 394.6,-665.6 394.6,-671.6 394.6,-671.6 394.6,-683.6 394.6,-683.6 394.6,-689.6 388.6,-695.6 382.6,-695.6"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-680.9" font-family="Helvetica,sans-Serif" font-size="11.00">Lag Features</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-667.7" font-family="Helvetica,sans-Serif" font-size="11.00">Load t-1h · t-24h · t-168h</text>
+</g>
+<!-- FeatEng&#45;&gt;LagFeat -->
+<g id="edge5" class="edge">
+<title>FeatEng-&gt;LagFeat</title>
+<path fill="none" stroke="#666666" d="M323,-738.28C323,-738.28 323,-707.61 323,-707.61"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-707.61 323,-697.61 319.5,-707.61 326.5,-707.61"/>
+</g>
+<!-- RollFeat -->
+<g id="node7" class="node">
+<title>RollFeat</title>
+<path fill="#eeedfe" stroke="#534ab7" d="M402.17,-616.6C402.17,-616.6 243.83,-616.6 243.83,-616.6 237.83,-616.6 231.83,-610.6 231.83,-604.6 231.83,-604.6 231.83,-592.6 231.83,-592.6 231.83,-586.6 237.83,-580.6 243.83,-580.6 243.83,-580.6 402.17,-580.6 402.17,-580.6 408.17,-580.6 414.17,-586.6 414.17,-592.6 414.17,-592.6 414.17,-604.6 414.17,-604.6 414.17,-610.6 408.17,-616.6 402.17,-616.6"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-601.9" font-family="Helvetica,sans-Serif" font-size="11.00">Rolling Features</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-588.7" font-family="Helvetica,sans-Serif" font-size="11.00">Mean 24h · Mean 168h · Std 24h</text>
+</g>
+<!-- LagFeat&#45;&gt;RollFeat -->
+<g id="edge6" class="edge">
+<title>LagFeat-&gt;RollFeat</title>
+<path fill="none" stroke="#666666" d="M323,-659.28C323,-659.28 323,-628.61 323,-628.61"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-628.61 323,-618.61 319.5,-628.61 326.5,-628.61"/>
+</g>
+<!-- Split -->
+<g id="node8" class="node">
+<title>Split</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M386.27,-531.8C386.27,-531.8 259.73,-531.8 259.73,-531.8 253.73,-531.8 247.73,-525.8 247.73,-519.8 247.73,-519.8 247.73,-507.8 247.73,-507.8 247.73,-501.8 253.73,-495.8 259.73,-495.8 259.73,-495.8 386.27,-495.8 386.27,-495.8 392.27,-495.8 398.27,-501.8 398.27,-507.8 398.27,-507.8 398.27,-519.8 398.27,-519.8 398.27,-525.8 392.27,-531.8 386.27,-531.8"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-517.1" font-family="Helvetica,sans-Serif" font-size="11.00">Train / Test Split</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-503.9" font-family="Helvetica,sans-Serif" font-size="11.00">2020-2022 train · 2023 test</text>
+</g>
+<!-- RollFeat&#45;&gt;Split -->
+<g id="edge7" class="edge">
+<title>RollFeat-&gt;Split</title>
+<path fill="none" stroke="#666666" d="M323,-580.2C323,-580.2 323,-543.68 323,-543.68"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-543.68 323,-533.68 319.5,-543.68 326.5,-543.68"/>
+</g>
+<!-- LinReg -->
+<g id="node9" class="node">
+<title>LinReg</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M109.64,-452.8C109.64,-452.8 28.36,-452.8 28.36,-452.8 22.36,-452.8 16.36,-446.8 16.36,-440.8 16.36,-440.8 16.36,-428.8 16.36,-428.8 16.36,-422.8 22.36,-416.8 28.36,-416.8 28.36,-416.8 109.64,-416.8 109.64,-416.8 115.64,-416.8 121.64,-422.8 121.64,-428.8 121.64,-428.8 121.64,-440.8 121.64,-440.8 121.64,-446.8 115.64,-452.8 109.64,-452.8"/>
+<text xml:space="preserve" text-anchor="middle" x="69" y="-438.1" font-family="Helvetica,sans-Serif" font-size="11.00">Linear Regression</text>
+<text xml:space="preserve" text-anchor="middle" x="69" y="-424.9" font-family="Helvetica,sans-Serif" font-size="11.00">Baseline</text>
+</g>
+<!-- Split&#45;&gt;LinReg -->
+<g id="edge8" class="edge">
+<title>Split-&gt;LinReg</title>
+<path fill="none" stroke="#666666" d="M247.48,-520C172.61,-520 69,-520 69,-520 69,-520 69,-464.8 69,-464.8"/>
+<polygon fill="#666666" stroke="#666666" points="72.5,-464.8 69,-454.8 65.5,-464.8 72.5,-464.8"/>
+</g>
+<!-- RF -->
+<g id="node10" class="node">
+<title>RF</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M230.9,-452.8C230.9,-452.8 163.1,-452.8 163.1,-452.8 157.1,-452.8 151.1,-446.8 151.1,-440.8 151.1,-440.8 151.1,-428.8 151.1,-428.8 151.1,-422.8 157.1,-416.8 163.1,-416.8 163.1,-416.8 230.9,-416.8 230.9,-416.8 236.9,-416.8 242.9,-422.8 242.9,-428.8 242.9,-428.8 242.9,-440.8 242.9,-440.8 242.9,-446.8 236.9,-452.8 230.9,-452.8"/>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-438.1" font-family="Helvetica,sans-Serif" font-size="11.00">Random Forest</text>
+<text xml:space="preserve" text-anchor="middle" x="197" y="-424.9" font-family="Helvetica,sans-Serif" font-size="11.00">Ensemble</text>
+</g>
+<!-- Split&#45;&gt;RF -->
+<g id="edge9" class="edge">
+<title>Split-&gt;RF</title>
+<path fill="none" stroke="#666666" d="M247.53,-508C241.32,-508 237.37,-508 237.37,-508 237.37,-508 237.37,-464.78 237.37,-464.78"/>
+<polygon fill="#666666" stroke="#666666" points="240.87,-464.78 237.37,-454.78 233.87,-464.79 240.87,-464.78"/>
+</g>
+<!-- XGB -->
+<g id="node11" class="node">
+<title>XGB</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M362.42,-452.8C362.42,-452.8 283.58,-452.8 283.58,-452.8 277.58,-452.8 271.58,-446.8 271.58,-440.8 271.58,-440.8 271.58,-428.8 271.58,-428.8 271.58,-422.8 277.58,-416.8 283.58,-416.8 283.58,-416.8 362.42,-416.8 362.42,-416.8 368.42,-416.8 374.42,-422.8 374.42,-428.8 374.42,-428.8 374.42,-440.8 374.42,-440.8 374.42,-446.8 368.42,-452.8 362.42,-452.8"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-438.1" font-family="Helvetica,sans-Serif" font-size="11.00">XGBoost</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-424.9" font-family="Helvetica,sans-Serif" font-size="11.00">Gradient boosting</text>
+</g>
+<!-- Split&#45;&gt;XGB -->
+<g id="edge10" class="edge">
+<title>Split-&gt;XGB</title>
+<path fill="none" stroke="#666666" d="M323,-495.48C323,-495.48 323,-464.81 323,-464.81"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-464.81 323,-454.81 319.5,-464.81 326.5,-464.81"/>
+</g>
+<!-- SVM -->
+<g id="node12" class="node">
+<title>SVM</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M525,-452.8C525,-452.8 415,-452.8 415,-452.8 409,-452.8 403,-446.8 403,-440.8 403,-440.8 403,-428.8 403,-428.8 403,-422.8 409,-416.8 415,-416.8 415,-416.8 525,-416.8 525,-416.8 531,-416.8 537,-422.8 537,-428.8 537,-428.8 537,-440.8 537,-440.8 537,-446.8 531,-452.8 525,-452.8"/>
+<text xml:space="preserve" text-anchor="middle" x="470" y="-438.1" font-family="Helvetica,sans-Serif" font-size="11.00">SVM</text>
+<text xml:space="preserve" text-anchor="middle" x="470" y="-424.9" font-family="Helvetica,sans-Serif" font-size="11.00">Support Vector Machine</text>
+</g>
+<!-- Split&#45;&gt;SVM -->
+<g id="edge11" class="edge">
+<title>Split-&gt;SVM</title>
+<path fill="none" stroke="#666666" d="M398.76,-508C404.77,-508 408.58,-508 408.58,-508 408.58,-508 408.58,-464.78 408.58,-464.78"/>
+<polygon fill="#666666" stroke="#666666" points="412.08,-464.78 408.58,-454.78 405.08,-464.79 412.08,-464.78"/>
+</g>
+<!-- LSTM -->
+<g id="node13" class="node">
+<title>LSTM</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M695.96,-452.8C695.96,-452.8 578.04,-452.8 578.04,-452.8 572.04,-452.8 566.04,-446.8 566.04,-440.8 566.04,-440.8 566.04,-428.8 566.04,-428.8 566.04,-422.8 572.04,-416.8 578.04,-416.8 578.04,-416.8 695.96,-416.8 695.96,-416.8 701.96,-416.8 707.96,-422.8 707.96,-428.8 707.96,-428.8 707.96,-440.8 707.96,-440.8 707.96,-446.8 701.96,-452.8 695.96,-452.8"/>
+<text xml:space="preserve" text-anchor="middle" x="637" y="-438.1" font-family="Helvetica,sans-Serif" font-size="11.00">LSTM</text>
+<text xml:space="preserve" text-anchor="middle" x="637" y="-424.9" font-family="Helvetica,sans-Serif" font-size="11.00">Long Short-Term Memory</text>
+</g>
+<!-- Split&#45;&gt;LSTM -->
+<g id="edge12" class="edge">
+<title>Split-&gt;LSTM</title>
+<path fill="none" stroke="#666666" d="M398.61,-520C491.52,-520 637,-520 637,-520 637,-520 637,-464.8 637,-464.8"/>
+<polygon fill="#666666" stroke="#666666" points="640.5,-464.8 637,-454.8 633.5,-464.8 640.5,-464.8"/>
+</g>
+<!-- Tuning -->
+<g id="node14" class="node">
+<title>Tuning</title>
+<path fill="#e6f1fb" stroke="#185fa5" d="M399.09,-373.8C399.09,-373.8 246.91,-373.8 246.91,-373.8 240.91,-373.8 234.91,-367.8 234.91,-361.8 234.91,-361.8 234.91,-349.8 234.91,-349.8 234.91,-343.8 240.91,-337.8 246.91,-337.8 246.91,-337.8 399.09,-337.8 399.09,-337.8 405.09,-337.8 411.09,-343.8 411.09,-349.8 411.09,-349.8 411.09,-361.8 411.09,-361.8 411.09,-367.8 405.09,-373.8 399.09,-373.8"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-359.1" font-family="Helvetica,sans-Serif" font-size="11.00">Hyperparameter Tuning</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-345.9" font-family="Helvetica,sans-Serif" font-size="11.00">GridSearchCV · CrossValidation</text>
+</g>
+<!-- LinReg&#45;&gt;Tuning -->
+<g id="edge13" class="edge">
+<title>LinReg-&gt;Tuning</title>
+<path fill="none" stroke="#666666" d="M69,-416.52C69,-393.25 69,-356 69,-356 69,-356 223.01,-356 223.01,-356"/>
+<polygon fill="#666666" stroke="#666666" points="223.01,-359.5 233.01,-356 223.01,-352.5 223.01,-359.5"/>
+</g>
+<!-- RF&#45;&gt;Tuning -->
+<g id="edge14" class="edge">
+<title>RF-&gt;Tuning</title>
+<path fill="none" stroke="#666666" d="M238.91,-416.48C238.91,-416.48 238.91,-385.81 238.91,-385.81"/>
+<polygon fill="#666666" stroke="#666666" points="242.41,-385.81 238.91,-375.81 235.41,-385.81 242.41,-385.81"/>
+</g>
+<!-- XGB&#45;&gt;Tuning -->
+<g id="edge15" class="edge">
+<title>XGB-&gt;Tuning</title>
+<path fill="none" stroke="#666666" d="M323,-416.48C323,-416.48 323,-385.81 323,-385.81"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-385.81 323,-375.81 319.5,-385.81 326.5,-385.81"/>
+</g>
+<!-- SVM&#45;&gt;Tuning -->
+<g id="edge16" class="edge">
+<title>SVM-&gt;Tuning</title>
+<path fill="none" stroke="#666666" d="M407.04,-416.48C407.04,-416.48 407.04,-385.81 407.04,-385.81"/>
+<polygon fill="#666666" stroke="#666666" points="410.54,-385.81 407.04,-375.81 403.54,-385.81 410.54,-385.81"/>
+</g>
+<!-- LSTM&#45;&gt;Tuning -->
+<g id="edge17" class="edge">
+<title>LSTM-&gt;Tuning</title>
+<path fill="none" stroke="#666666" d="M637,-416.52C637,-393.25 637,-356 637,-356 637,-356 422.82,-356 422.82,-356"/>
+<polygon fill="#666666" stroke="#666666" points="422.82,-352.5 412.82,-356 422.82,-359.5 422.82,-352.5"/>
+</g>
+<!-- Eval -->
+<g id="node15" class="node">
+<title>Eval</title>
+<path fill="#faeeda" stroke="#854f0b" d="M422.92,-289C422.92,-289 223.08,-289 223.08,-289 217.08,-289 211.08,-283 211.08,-277 211.08,-277 211.08,-265 211.08,-265 211.08,-259 217.08,-253 223.08,-253 223.08,-253 422.92,-253 422.92,-253 428.92,-253 434.92,-259 434.92,-265 434.92,-265 434.92,-277 434.92,-277 434.92,-283 428.92,-289 422.92,-289"/>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-274.3" font-family="Helvetica,sans-Serif" font-size="11.00">Model Evaluation</text>
+<text xml:space="preserve" text-anchor="middle" x="323" y="-261.1" font-family="Helvetica,sans-Serif" font-size="11.00">MAE · RMSE · R²  — compare all models</text>
+</g>
+<!-- Tuning&#45;&gt;Eval -->
+<g id="edge18" class="edge">
+<title>Tuning-&gt;Eval</title>
+<path fill="none" stroke="#666666" d="M323,-337.4C323,-337.4 323,-300.88 323,-300.88"/>
+<polygon fill="#666666" stroke="#666666" points="326.5,-300.88 323,-290.88 319.5,-300.88 326.5,-300.88"/>
+</g>
+<!-- Importance -->
+<g id="node16" class="node">
+<title>Importance</title>
+<path fill="#faeeda" stroke="#854f0b" d="M317.03,-210C317.03,-210 214.97,-210 214.97,-210 208.97,-210 202.97,-204 202.97,-198 202.97,-198 202.97,-186 202.97,-186 202.97,-180 208.97,-174 214.97,-174 214.97,-174 317.03,-174 317.03,-174 323.03,-174 329.03,-180 329.03,-186 329.03,-186 329.03,-198 329.03,-198 329.03,-204 323.03,-210 317.03,-210"/>
+<text xml:space="preserve" text-anchor="middle" x="266" y="-195.3" font-family="Helvetica,sans-Serif" font-size="11.00">Feature Importance</text>
+<text xml:space="preserve" text-anchor="middle" x="266" y="-182.1" font-family="Helvetica,sans-Serif" font-size="11.00">Top drivers of demand</text>
+</g>
+<!-- Eval&#45;&gt;Importance -->
+<g id="edge19" class="edge">
+<title>Eval-&gt;Importance</title>
+<path fill="none" stroke="#666666" d="M270.05,-252.68C270.05,-252.68 270.05,-222.01 270.05,-222.01"/>
+<polygon fill="#666666" stroke="#666666" points="273.55,-222.01 270.05,-212.01 266.55,-222.01 273.55,-222.01"/>
+</g>
+<!-- Forecast -->
+<g id="node17" class="node">
+<title>Forecast</title>
+<path fill="#faeeda" stroke="#854f0b" d="M432.16,-210C432.16,-210 369.84,-210 369.84,-210 363.84,-210 357.84,-204 357.84,-198 357.84,-198 357.84,-186 357.84,-186 357.84,-180 363.84,-174 369.84,-174 369.84,-174 432.16,-174 432.16,-174 438.16,-174 444.16,-180 444.16,-186 444.16,-186 444.16,-198 444.16,-198 444.16,-204 438.16,-210 432.16,-210"/>
+<text xml:space="preserve" text-anchor="middle" x="401" y="-195.3" font-family="Helvetica,sans-Serif" font-size="11.00">Load Forecast</text>
+<text xml:space="preserve" text-anchor="middle" x="401" y="-182.1" font-family="Helvetica,sans-Serif" font-size="11.00">24h ahead</text>
+</g>
+<!-- Eval&#45;&gt;Forecast -->
+<g id="edge20" class="edge">
+<title>Eval-&gt;Forecast</title>
+<path fill="none" stroke="#666666" d="M396.38,-252.68C396.38,-252.68 396.38,-222.01 396.38,-222.01"/>
+<polygon fill="#666666" stroke="#666666" points="399.88,-222.01 396.38,-212.01 392.88,-222.01 399.88,-222.01"/>
+</g>
+<!-- Viz -->
+<g id="node18" class="node">
+<title>Viz</title>
+<path fill="#faeeda" stroke="#854f0b" d="M432.3,-131C432.3,-131 343.7,-131 343.7,-131 337.7,-131 331.7,-125 331.7,-119 331.7,-119 331.7,-107 331.7,-107 331.7,-101 337.7,-95 343.7,-95 343.7,-95 432.3,-95 432.3,-95 438.3,-95 444.3,-101 444.3,-107 444.3,-107 444.3,-119 444.3,-119 444.3,-125 438.3,-131 432.3,-131"/>
+<text xml:space="preserve" text-anchor="middle" x="388" y="-116.3" font-family="Helvetica,sans-Serif" font-size="11.00">Prediction vs Actual</text>
+<text xml:space="preserve" text-anchor="middle" x="388" y="-103.1" font-family="Helvetica,sans-Serif" font-size="11.00">Visualization</text>
+</g>
+<!-- Forecast&#45;&gt;Viz -->
+<g id="edge21" class="edge">
+<title>Forecast-&gt;Viz</title>
+<path fill="none" stroke="#666666" d="M401,-173.68C401,-173.68 401,-143.01 401,-143.01"/>
+<polygon fill="#666666" stroke="#666666" points="404.5,-143.01 401,-133.01 397.5,-143.01 404.5,-143.01"/>
+</g>
+<!-- Insights -->
+<g id="node19" class="node">
+<title>Insights</title>
+<path fill="#faeeda" stroke="#854f0b" d="M426.8,-52C426.8,-52 349.2,-52 349.2,-52 343.2,-52 337.2,-46 337.2,-40 337.2,-40 337.2,-28 337.2,-28 337.2,-22 343.2,-16 349.2,-16 349.2,-16 426.8,-16 426.8,-16 432.8,-16 438.8,-22 438.8,-28 438.8,-28 438.8,-40 438.8,-40 438.8,-46 432.8,-52 426.8,-52"/>
+<text xml:space="preserve" text-anchor="middle" x="388" y="-37.3" font-family="Helvetica,sans-Serif" font-size="11.00">Demand Patterns</text>
+<text xml:space="preserve" text-anchor="middle" x="388" y="-24.1" font-family="Helvetica,sans-Serif" font-size="11.00">Energy insights</text>
+</g>
+<!-- Viz&#45;&gt;Insights -->
+<g id="edge22" class="edge">
+<title>Viz-&gt;Insights</title>
+<path fill="none" stroke="#666666" d="M388,-94.68C388,-94.68 388,-64.01 388,-64.01"/>
+<polygon fill="#666666" stroke="#666666" points="391.5,-64.01 388,-54.01 384.5,-64.01 391.5,-64.01"/>
+</g>
+</g>
+</svg>
