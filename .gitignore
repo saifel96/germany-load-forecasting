@@ -1,0 +1,8 @@
+data/raw/*
+data/processed/*
+
+erläungen.txt
+notes.txt
+workflow.dot
+graphviz-12.svg
+
