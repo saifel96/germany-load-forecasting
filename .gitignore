@@ -1,9 +1,18 @@
-data/raw/*
-data/processed/*
+# Environments
 .venv/
 
+# Notes
 erklaerungen.txt
 notes.txt
 workflow.dot
 graphviz-12.svg
+schritte.txt
 
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Nur sehr große Dateien ignorieren
+*.nc
+*.h5
