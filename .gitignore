@@ -8,6 +8,7 @@ notes.txt
 workflow.dot
 graphviz-12.svg
 schritte.txt
+LSTM.txt
 
 # Python
 __pycache__/
