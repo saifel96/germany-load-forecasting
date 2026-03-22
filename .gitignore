@@ -20,5 +20,5 @@ __pycache__/
 *.h5
 
 
-*.pklmodels/*.pkl
+models/*.pkl
 models/*.h5
