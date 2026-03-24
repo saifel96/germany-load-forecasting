@@ -4,31 +4,75 @@
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> Hourly electricity demand forecasting for Germany using machine learning and deep learning — trained on 4 years of ENTSO-E load data combined with weather features.
+> Hourly electricity demand forecasting for Germany using machine learning and deep learning — trained on 4 years of ENTSO-E load data combined with weather features. Three forecasting scenarios: one-step (1h-ahead), day-ahead with lag features, and day-ahead without lag features.
 
-![Final Model Heatmap](figures/12_final_heatmap.png)
+![](<figures/Final Model Comparison- AI vs. Naive Benchmarks (MAE in MW).png>)
 
 ---
 
 ## Overview
 
-This project builds an end-to-end machine learning pipeline to forecast Germany's hourly electricity load. Five models are trained, tuned, and compared — from a simple Linear Regression baseline up to an LSTM deep learning model.
+This project builds an end-to-end machine learning pipeline to forecast Germany's hourly electricity load. Five models are trained, tuned, and compared — from a simple Linear Regression baseline up to an LSTM deep learning model. Three distinct forecasting scenarios are evaluated to measure the real-world value of lag features and different prediction horizons.
 
-**Best result: LSTM — MAE 371 MW, RMSE 528 MW, R² 0.9967**
+**Best result: XGBoost — MAE 583 MW, RMSE 767 MW, R² 0.9931 (one-step scenario)**
 
 ---
 
-## Results
+## Results (All Scenarios)
+
+After identifying and fixing **Data Leakage** in the initial rolling features, all models were evaluated across three scenarios. Results are compared against **Naive Persistence Benchmarks** to measure genuine forecasting skill.
+
+### Scenario 1 — One-Step (1h-ahead)
 
 | Model | MAE (MW) | RMSE (MW) | R² |
 |---|---|---|---|
-| Linear Regression | 1175 | 1467 | 0.9747 |
-| SVM | 1131 | 1452 | 0.9752 |
-| Random Forest (tuned) | 560 | 740 | 0.9936 |
-| XGBoost (tuned) | 520 | 676 | 0.9946 |
-| **LSTM** | **371** | **528** | **0.9967** |
+| **XGBoost** | **583** | **767** | **0.9931** |
+| SVM | 1,110 | — | — |
+| Linear Regression | 1,140 | — | — |
+| LSTM | 1,167 | 1,488 | 0.9738 |
+| *Persistence (1h)* | *1,786* | — | — |
+| *Persistence (Week)* | *2,382* | — | — |
 
-![All Metrics Comparison](figures/13_final_all_metrics.png)
+### Scenario 2 — Day-Ahead with Lag Features
+
+| Model | MAE (MW) | RMSE (MW) | R² |
+|---|---|---|---|
+| **XGBoost** | **1,402** | **1,845** | **0.9599** |
+| SVM | 1,834 | — | — |
+| Linear Regression | 1,872 | — | — |
+| LSTM | 2,235 | — | — |
+| *Persistence (Day)* | *3,965* | — | — |
+| *Persistence (Week)* | *2,382* | — | — |
+
+### Scenario 3 — Day-Ahead without Lag Features (Ablation)
+
+| Model | MAE (MW) |
+|---|---|
+| **XGBoost** | **3,802** |
+| LSTM | 3,850 |
+| *Persistence (Day)* | *3,965* |
+| Linear Regression | 4,421 |
+| SVM | 4,508 |
+| *Persistence (Week)* | ***2,382*** |
+
+> **Key finding:** Without lag features, **all ML models fail to beat the weekly persistence baseline (2,382 MW)**, demonstrating that lag features are the single most critical component of the feature set.
+
+![](<figures/Final Model Comparison- AI vs. Naive Benchmarks (MAE in MW).png>)
+
+---
+
+## Data Integrity & Leakage Prevention
+
+A critical phase of this project was the identification and correction of **Look-ahead Bias**.
+- **The Issue:** Initial rolling features included the target hour's value, leading to an artificial MAE of 371 MW.
+- **The Fix:** Implemented a strict `df.shift(1)` before calculating all rolling statistics and lag features.
+- **Validation:** Every feature at time $t$ now only uses information available at $t-1$.
+
+```python
+# Correct way to create features without leakage
+df["lag_hour"] = df["Load_MW"].shift(1)
+df["rolling_mean_24h"] = df["Load_MW"].shift(1).rolling(window=24).mean()
+```
 
 ---
 
@@ -49,7 +93,12 @@ Raw Data (ENTSO-E + Weather)
         ↓
   Hyperparameter Tuning
         ↓
-  Final Evaluation
+  Final Evaluation (09)
+        ↓
+  Day-Ahead Scenarios
+  (10: with lags | 11: without lags)
+        ↓
+  Cross-Scenario Result Plots
 ```
 
 ---
@@ -66,21 +115,21 @@ ML_Load_Forecasting/
 │   ├── Silver/             # Cleaned data
 │   │   └── df_clean.csv
 │   └── Gold/               # Feature-engineered data
-│       ├── df_features.csv
 │       └── df_features_fourier_time_encoding.csv
 │
 ├── notebooks/
 │   ├── 01_data_collection.ipynb
 │   ├── 02_data_cleaning.ipynb
 │   ├── 03_EDA.ipynb
-│   ├── 04_feature_engineering.ipynb
 │   ├── 04_feature_engineering_time_encoding.ipynb
-│   ├── 05_model_training.ipynb
 │   ├── 05_model_training_fourier_features.ipynb
 │   ├── 06_hypertuning.ipynb
 │   ├── 07_LSTM_Model.ipynb
 │   ├── 08_feature_importance.ipynb
-│   └── 09_final_evaluation.ipynb
+│   ├── 09_final_evaluation.ipynb
+│   ├── 10-day-ahead-model-lag_features.ipynb         ← NEW
+│   ├── 11-day-ahead-model-without_lag_features.ipynb ← NEW
+│   └── result_plots.ipynb                            ← NEW
 │
 ├── models/                 # Saved trained models (.pkl)
 ├── figures/                # All plots and visualizations
@@ -97,27 +146,28 @@ ML_Load_Forecasting/
 | 01 | `01_data_collection.ipynb` | Load ENTSO-E electricity data and ERA5 weather data |
 | 02 | `02_data_cleaning.ipynb` | Handle missing values, align timestamps, remove outliers |
 | 03 | `03_EDA.ipynb` | Exploratory analysis — seasonal patterns, temperature correlation |
-| 04 | `04_feature_engineering.ipynb` | Lag features, rolling statistics, time & holiday features |
-| 04 | `04_feature_engineering_time_encoding.ipynb` | Fourier-based cyclical time encoding |
-| 05 | `05_model_training.ipynb` | Train Linear Regression, SVM, Random Forest, XGBoost |
-| 05 | `05_model_training_fourier_features.ipynb` | Model training with Fourier-encoded features |
+| 04 | `04_feature_engineering_time_encoding.ipynb` | Lag features, rolling stats, time & Fourier cyclical encoding |
+| 05 | `05_model_training_fourier_features.ipynb` | Train LR, SVM, RF, XGBoost with Fourier-encoded features |
 | 06 | `06_hypertuning.ipynb` | RandomizedSearchCV with TimeSeriesSplit for RF and XGB |
 | 07 | `07_LSTM_Model.ipynb` | LSTM with 24h rolling window, StandardScaler, Early Stopping |
 | 08 | `08_feature_importance.ipynb` | RF and XGB feature importances |
-| 09 | `09_final_evaluation.ipynb` | Final comparison of all 5 models |
+| 09 | `09_final_evaluation.ipynb` | Final one-step comparison of all 5 models |
+| 10 | `10-day-ahead-model-lag_features.ipynb` | Day-ahead (24h horizon) with lag features — LR, SVM, XGB, LSTM |
+| 11 | `11-day-ahead-model-without_lag_features.ipynb` | Day-ahead ablation: same models without any lag features |
+| — | `result_plots.ipynb` | Cross-scenario bar charts comparing all models and persistence baselines |
 
 ---
 
 ## Features
 
-### Lag Features
+### Lag Features (Scenarios 1 & 2)
 | Feature | Description |
 |---|---|
-| `load_t1h` | Load 1 hour ago |
-| `load_t24h` | Load 24 hours ago (same hour yesterday) |
-| `load_t168h` | Load 168 hours ago (same hour last week) |
-| `rolling_mean_24h` | 24h rolling average |
-| `rolling_mean_168h` | 168h rolling average |
+| `load_t1h` / `lag_day` | Load 1h or 24h ago |
+| `load_t24h` / `lag_week` | Load 24h or 168h ago (same hour yesterday / last week) |
+| `load_t168h` / `lag_2week` | Load 168h or 336h ago |
+| `rolling_mean_24h` | 24h rolling average (shifted to prevent leakage) |
+| `rolling_mean_168h` / `rolling_mean_week` | 7-day rolling average (shifted by 24h for day-ahead) |
 | `rolling_std_24h` | 24h rolling standard deviation |
 
 ### Time Features
@@ -128,18 +178,25 @@ ML_Load_Forecasting/
 | `month` | Month (1–12) |
 | `is_weekend` | Saturday / Sunday flag |
 | `is_holiday` | German public holiday flag |
+| `is_rest_day` | Holiday or weekend combined flag |
 
 ### Weather Features
 | Feature | Description |
 |---|---|
-| `temperature` | Air temperature (°C) |
-| `wind_speed` | Wind speed (m/s) |
-| `radiation` | Solar radiation (W/m²) |
+| `temperature_2m` | Air temperature at 2 m (°C) |
+| `wind_speed_10m` | Wind speed at 10 m (m/s) |
+| `shortwave_radiation` | Solar radiation (W/m²) |
 
 ### Fourier / Cyclical Encoding
-Time features encoded as sine/cosine pairs to preserve cyclical structure:
+Time features encoded as sine/cosine pairs to preserve cyclical structure (used in all scenarios):
 
 $$\text{sin\_hour} = \sin\left(\frac{2\pi \cdot \text{hour}}{24}\right), \quad \text{cos\_hour} = \cos\left(\frac{2\pi \cdot \text{hour}}{24}\right)$$
+
+Applied to hour (period 24), day-of-week (period 7), and month (period 12).
+
+![Features Overview](figures/05_features_overview.png)
+
+![Fourier Features Overview](figures/05_features_overview_fourier_time_encoding.png)
 
 ---
 
@@ -155,6 +212,8 @@ $$\text{sin\_hour} = \sin\left(\frac{2\pi \cdot \text{hour}}{24}\right), \quad \
 ## EDA Highlights
 
 ![Load Timeseries](figures/01_load_timeseries.png)
+
+![Weekly Load Pattern](figures/02_load_week.png)
 
 ![Hourly Profile](figures/03_hourly_profile.png)
 
@@ -188,20 +247,27 @@ subsample      = 0.6
 colsample_bytree = 1.0
 ```
 
-![Tuning Comparison](figures/08_tuning_comparison.png)
+![](<figures/Performance Comparison- Load Forecasting Models.png>)
 
 ### LSTM
-- **Window size:** 24 hours (each prediction sees the last 24 hours as a sequence)
+
+**One-step LSTM (notebook 07)**
+- **Window size:** 24 hours (predicts 1h ahead after a 24h context window)
 - **Architecture:** 2 × LSTM layers (128 units → 64 units) + Dense(1)
 - **Normalization:** StandardScaler on both X and y (required for stable LSTM training)
 - **Training:** Adam optimizer, Early Stopping (patience=10), batch_size=64
 - Input shape: `(samples, 24 timesteps, 21 features)`
 
+**Day-ahead LSTM (notebooks 10 & 11)**
+- **Architecture:** LSTM(64, return_sequences=True) → Dropout(0.2) → LSTM(32) → Dropout(0.2) → Dense(16, ReLU) → Dense(1)
+- **Sequence construction (with lags):** window=24, horizon=24 → predicts `y[i + 24 + 24 - 1]` (true 24h-ahead)
+- **Sequence construction (no lags):** window=24 → predicts `y[i + 24]` (next step after 24h context)
+- **Training:** Adam, MSE loss, Early Stopping (patience=5, restore_best_weights), batch_size=32, max 50 epochs
+- Input shape: `(samples, 24 timesteps, 16 features)` with lags | `(samples, 24 timesteps, 12 features)` without
+
 ---
 
 ## Feature Importance
-
-![Feature Importance](figures/10_feature_importance.png)
 
 Top features across RF and XGB:
 1. `load_t1h` — last hour's load (strongest predictor)
@@ -214,7 +280,7 @@ Top features across RF and XGB:
 
 ## Prediction vs Actual
 
-![Prediction vs Actual](figures/11_prediction_vs_actual.png)
+![](<figures/Day-Ahead Forecast- 2023.02.01 - Day-ahead (with Lags).png>)
 
 ---
 
@@ -243,19 +309,30 @@ Execute notebooks in order:
 # 1. Data collection
 jupyter notebook notebooks/01_data_collection.ipynb
 
-# 2–9. Follow numbered sequence...
+# 2–9. Core pipeline (cleaning → EDA → features → training → tuning → evaluation)
 jupyter notebook notebooks/09_final_evaluation.ipynb
+
+# 10–11. Day-ahead forecasting scenarios
+jupyter notebook notebooks/10-day-ahead-model-lag_features.ipynb
+jupyter notebook notebooks/11-day-ahead-model-without_lag_features.ipynb
+
+# Cross-scenario result plots
+jupyter notebook notebooks/result_plots.ipynb
 ```
 
 ---
 
 ## Key Takeaways
 
-- **Lag features dominate** — yesterday and last-week load are the strongest predictors. The model essentially learns "today looks like yesterday at the same hour"
-- **Fourier encoding improves over raw integers** for cyclical time features (hour, weekday, month)
-- **LSTM captures temporal dependencies** that tree-based models miss, leading to a ~30% MAE reduction over XGBoost
-- **Temperature matters** but is secondary to lag features for short-horizon forecasting
-- **Holidays must be modeled explicitly** — without holiday flags, models systematically over-predict demand on public holidays
+- **Integrity > Accuracy:** Fixing data leakage increased the MAE but produced a valid, production-ready model. Initial rolling features yielded an artificially low MAE of 371 MW before the leakage was corrected with `shift(1)`.
+- **XGBoost dominates all scenarios:** XGBoost is the best model in every forecasting scenario — one-step (583 MW), day-ahead with lags (1,402 MW), and day-ahead without lags (3,802 MW).
+- **Beating the Baseline:** XGBoost outperforms the 1h-Persistence benchmark by **67%** (one-step) and the Day-ahead Weekly Persistence by **41%** (with lag features).
+- **Lag features are the most critical component:** Removing them triples the MAE for tree-based models and causes all four ML models to underperform even the naive weekly persistence baseline.
+- **LSTM does not outperform XGBoost here:** Despite its theoretical advantage for time series, LSTM consistently lags behind XGBoost across all three scenarios.
+- **Fourier encoding improves over raw integers** for cyclical time features (hour, weekday, month).
+- **Temperature matters** but is secondary to lag features for short-horizon forecasting.
+- **Holidays must be modeled explicitly** — without holiday flags, models systematically over-predict demand on public holidays.
+- **Day-ahead forecasting with lags is still practical:** XGBoost achieves MAE 1,402 MW (R² 0.9599) using only 24h-old actuals, well ahead of all naive baselines.
 
 ---
 
