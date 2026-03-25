@@ -4,7 +4,7 @@
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-> Hourly electricity demand forecasting for Germany using machine learning and deep learning — trained on 4 years of ENTSO-E load data combined with weather features. Three forecasting scenarios: one-step (1h-ahead), day-ahead with lag features, and day-ahead without lag features.
+> Hourly electricity demand forecasting for Germany using machine learning and deep learning — trained on 4 years of ENTSO-E load data combined with weather features. Three forecasting scenarios: one-step (1h-ahead), day-ahead with lag features, and day-ahead without lag features. The project also includes a **risk-aware quantile forecasting** layer that adds a probabilistic safety margin on top of the point forecast.
 
 ![](<figures/Final Model Comparison- AI vs. Naive Benchmarks (MAE in MW).png>)
 
@@ -152,7 +152,7 @@ ML_Load_Forecasting/
 | 07 | `07_LSTM_Model.ipynb` | LSTM with 24h rolling window, StandardScaler, Early Stopping |
 | 08 | `08_feature_importance.ipynb` | RF and XGB feature importances |
 | 09 | `09_final_evaluation.ipynb` | Final one-step comparison of all 5 models |
-| 10 | `10-day-ahead-model-lag_features.ipynb` | Day-ahead (24h horizon) with lag features — LR, SVM, XGB, LSTM |
+| 10 | `10-day-ahead-model-lag_features.ipynb` | Day-ahead (24h horizon) with lag features — LR, SVM, XGB, LSTM + **quantile/risk-aware buffer** |
 | 11 | `11-day-ahead-model-without_lag_features.ipynb` | Day-ahead ablation: same models without any lag features |
 | — | `result_plots.ipynb` | Cross-scenario bar charts comparing all models and persistence baselines |
 
@@ -249,6 +249,17 @@ colsample_bytree = 1.0
 
 ![](<figures/Performance Comparison- Load Forecasting Models.png>)
 
+### Quantile Regression
+
+`GradientBoostingRegressor(loss="quantile")` from scikit-learn is used to model the **90th percentile** of the load distribution. Unlike the mean forecast, the q90 model is calibrated to be exceeded only 10% of the time, giving a principled upper bound for grid capacity planning.
+
+| Metric | Description |
+|---|---|
+| **Pinball Loss** | Standard scoring rule for quantile forecasts: $L_\alpha(y, \hat{q}) = \alpha \max(y-\hat{q},0) + (1-\alpha)\max(\hat{q}-y,0)$ |
+| **Cost-Aware MAE** | Asymmetric metric weighting under-predictions ×2 relative to over-predictions |
+
+---
+
 ### LSTM
 
 **One-step LSTM (notebook 07)**
@@ -281,6 +292,50 @@ Top features across RF and XGB:
 ## Prediction vs Actual
 
 ![](<figures/Day-Ahead Forecast- 2023.02.01 - Day-ahead (with Lags).png>)
+
+---
+
+## Risk-Aware Forecasting (Quantile Regression)
+
+In addition to the point forecast, notebook 10 implements a **probabilistic safety margin** for grid operations using quantile regression.
+
+### Why it matters
+For grid operators, under-predicting demand is costlier than over-predicting — a forecast that is too low can cause supply shortfalls, while a forecast that is too high results in manageable over-provisioning. A mean forecast alone is insufficient for risk management.
+
+### Approach
+- A second model, `GradientBoostingRegressor(loss="quantile", alpha=0.9)`, is trained to predict the **90th percentile** of demand.
+- The gap between the mean XGBoost forecast and the q90 quantile forms the **safety buffer**.
+- Performance is measured with **Pinball Loss** (the standard metric for quantile forecasts).
+
+```python
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import mean_pinball_loss
+
+# Train a q90 quantile model
+model_q90 = GradientBoostingRegressor(loss="quantile", alpha=0.9)
+model_q90.fit(X_train, y_train_raw.values.ravel())
+pred_q90 = model_q90.predict(X_test)
+
+# Evaluate
+pinball = mean_pinball_loss(y_test_raw.values.ravel(), pred_q90, alpha=0.9)
+print(f"Pinball Loss (q=0.9): {pinball:.2f}")
+```
+
+### Asymmetric Cost Metric
+A custom **cost-aware metric** penalises under-predictions twice as heavily as over-predictions, reflecting the operational asymmetry:
+
+```python
+error = y_test_raw.values.ravel() - y_xgb_predict
+cost = np.where(error > 0, error * 2, np.abs(error))  # under-prediction × 2
+print(f"Cost-aware metric: {cost.mean():.2f}")
+```
+
+### Under- vs Over-Prediction Rate
+Analysis of the XGBoost day-ahead forecast directional bias (what % of hours the model is under vs. over the actual demand).
+
+![](<figures/Grid Load Forecast- Risk-Aware Buffer vs. Actual Demand.png>)
+
+> The shaded orange region shows the safety margin between the mean XGBoost forecast (green) and the 90th-percentile upper bound (dashed orange). Grid operators can use this band to ensure reserves are scheduled with a statistical guarantee that covers the majority of demand spikes.
 
 ---
 
@@ -333,6 +388,8 @@ jupyter notebook notebooks/result_plots.ipynb
 - **Temperature matters** but is secondary to lag features for short-horizon forecasting.
 - **Holidays must be modeled explicitly** — without holiday flags, models systematically over-predict demand on public holidays.
 - **Day-ahead forecasting with lags is still practical:** XGBoost achieves MAE 1,402 MW (R² 0.9599) using only 24h-old actuals, well ahead of all naive baselines.
+- **Risk-aware forecasting adds operational value:** A q90 quantile model built on top of the XGBoost point forecast provides a probabilistic upper bound for grid capacity planning, measured via Pinball Loss.
+- **Under-prediction is systematically more costly:** The asymmetric cost analysis shows that grid operators should prefer a slight over-forecast bias — a finding directly encoded in the cost-aware metric and the q90 safety margin.
 
 ---
 
