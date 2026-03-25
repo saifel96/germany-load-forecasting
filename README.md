@@ -78,27 +78,78 @@ df["rolling_mean_24h"] = df["Load_MW"].shift(1).rolling(window=24).mean()
 
 ## Pipeline
 
+The full pipeline is defined in [`workflow.dot`](workflow.dot) (Graphviz). Render it with:
+
+```bash
+dot -Tpng workflow.dot -o workflow.png
 ```
-Raw Data (ENTSO-E + Weather)
-        ↓
-  Data Cleaning
-        ↓
-  EDA & Visualization
-        ↓
-  Feature Engineering
-  (Lags + Fourier + Time)
-        ↓
-  Model Training
-  (LR → SVM → RF → XGB → LSTM)
-        ↓
-  Hyperparameter Tuning
-        ↓
-  Final Evaluation (09)
-        ↓
-  Day-Ahead Scenarios
-  (10: with lags | 11: without lags)
-        ↓
-  Cross-Scenario Result Plots
+
+```dot
+digraph ML_Load_Forecasting_Final {
+    rankdir=TB;
+    graph [fontname="Helvetica", splines=ortho, nodesep=0.4, ranksep=0.6];
+    node  [fontname="Helvetica", shape=box, style="rounded,filled", fontsize=11];
+    edge  [fontname="Helvetica", fontsize=9, color="#666666"];
+
+    subgraph cluster_data {
+        label="1. Data Sources";
+        style=dashed; color="#888888";
+        Load    [label="Electricity Load\nENTSO-E · Germany"];
+        Weather [label="Weather Data\nTemp · Wind · Radiation"];
+    }
+
+    subgraph cluster_processing {
+        label="2. Data Preparation & Integrity";
+        style=dashed; color="#888888";
+        Cleaning  [label="Data Cleaning\nMissing values · outliers"];
+        FeatEng   [label="Feature Engineering\nLags · Fourier · Holidays"];
+        LeakFix   [label="LEAKAGE PREVENTION\nShift(1) · Safe Rolling Windows"];
+    }
+
+    subgraph cluster_scenarios {
+        label="3. Forecasting Scenarios";
+        style=dashed; color="#888888";
+        OneStep   [label="1h-Ahead\nShort-Term Forecast"];
+        DayAheadL [label="Day-Ahead (with Lags)\nOperational / Market Use"];
+        DayAheadP [label="Day-Ahead (no Lags)\nExogenous / Stress Test"];
+    }
+
+    subgraph cluster_ml {
+        label="4. Modeling";
+        style=dashed; color="#888888";
+        Split  [label="Time-Series Split\n2020-2022 train · 2023 test"];
+        Base   [label="Naive Baselines\n1h · 24h · Weekly Persistence"];
+        XGB    [label="XGBoost\n(Best Performer)"];
+        LSTM   [label="LSTM\n(Deep Learning)"];
+        SVM    [label="SVM & Linear\nStatistical Models"];
+    }
+
+    subgraph cluster_risk {
+        label="5. Risk-Aware Layer";
+        style=dashed; color="#888888";
+        Quantile [label="Quantile Model (q90)\nUpper Bound Forecast"];
+        Pinball  [label="Pinball Loss\nQuantile Evaluation"];
+        Cost     [label="Cost-Aware Metric\nUnder-prediction x2"];
+    }
+
+    subgraph cluster_results {
+        label="6. Evaluation & Insights";
+        style=dashed; color="#888888";
+        Eval        [label="MAE vs Baselines\nReal Skill Measurement"];
+        Importance  [label="Feature Importance\nLag Dominance"];
+        Viz         [label="Visualization\nActual vs Prediction + Risk Band"];
+    }
+
+    Load -> Cleaning; Weather -> Cleaning;
+    Cleaning -> FeatEng -> LeakFix;
+    LeakFix -> OneStep; LeakFix -> DayAheadL; LeakFix -> DayAheadP;
+    OneStep -> Split; DayAheadL -> Split; DayAheadP -> Split;
+    Split -> Base; Split -> XGB; Split -> LSTM; Split -> SVM;
+    Base -> Eval; XGB -> Eval; LSTM -> Eval; SVM -> Eval;
+    XGB -> Quantile; Quantile -> Pinball; Quantile -> Cost;
+    Eval -> Importance -> Viz;
+    Pinball -> Viz; Cost -> Viz;
+}
 ```
 
 ---
